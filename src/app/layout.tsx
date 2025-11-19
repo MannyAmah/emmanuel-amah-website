@@ -15,14 +15,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Emmanuel Amah",
-  description: "Healthcare Provider, Data Scientist and Founder. Building products. Sharing insights on life and health.",
+  description: "Healthcare Provider, Data Scientist and Founder. Building products. Sharing insights on health and life.",
   openGraph: {
     title: "Emmanuel Amah",
-    description: "Healthcare Provider, Data Scientist and Founder.",
+    description: "Healthcare Provider, Data Scientist and Founder. Building products. Sharing insights on health and life.",
     url: "https://emmanuelamah.com",
     siteName: "Emmanuel Amah",
   },
 };
+
 
 export default function RootLayout({
   children,

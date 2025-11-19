@@ -60,8 +60,8 @@ export default function Home() {
         </nav>
 
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          <p>Building products. Sharing insights on life and health.</p>
-        </div>
+  <p>Building products. Sharing insights on health and life.</p>
+</div>
       </main>
     </div>
   );
