@@ -60,7 +60,7 @@ export default function Home() {
         </nav>
 
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          <p>Building products, sharing insights in life and health.</p>
+          <p>Building products. Sharing insights on life and health.</p>
         </div>
       </main>
     </div>

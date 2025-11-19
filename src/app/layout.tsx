@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Emmanuel Amah",
-  description: "Healthcare Provider, Data Scientist and Founder. Building products, sharing insights in life and health.",
+  description: "Healthcare Provider, Data Scientist and Founder. Building products. Sharing insights on life and health.",
   openGraph: {
     title: "Emmanuel Amah",
     description: "Healthcare Provider, Data Scientist and Founder.",
