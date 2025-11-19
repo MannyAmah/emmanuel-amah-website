@@ -37,10 +37,14 @@ export function CommandMenu() {
         }
 
         // New note with 'c'
-        if (e.key === 'c' && !e.metaKey && !e.ctrlKey && e.target) {
-          // Only trigger if not in an input
-          const target = e.target as HTMLElement
-          if (target && target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA') {
+        if (e.key === 'c' && !e.metaKey && !e.ctrlKey) {
+          const target = e.target as HTMLElement | null
+
+          if (
+            target &&
+            target.tagName !== 'INPUT' &&
+            target.tagName !== 'TEXTAREA'
+          ) {
             e.preventDefault()
             // Create new note logic would go here
           }
