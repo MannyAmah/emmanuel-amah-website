@@ -36,7 +36,7 @@ export function CommandMenu() {
           router.push('/notes')
         }
 
-        // New note with 'c'
+                // New note with 'c'
         if (e.key === 'c' && !e.metaKey && !e.ctrlKey) {
           const target = e.target
 
@@ -50,6 +50,7 @@ export function CommandMenu() {
             // Create new note logic would go here
           }
         }
+
       }
     }
 
