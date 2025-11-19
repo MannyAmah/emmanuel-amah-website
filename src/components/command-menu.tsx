@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Command } from 'cmdk'
-import { Home, FileText, Plus, Search, Moon, Sun } from 'lucide-react'
+import { Home, FileText, Plus, Moon, Sun } from 'lucide-react'
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false)
@@ -30,7 +30,7 @@ export function CommandMenu() {
           // Check if previous key was 'g'
         }
 
-        // Go to notes with 'gn'
+        // Go to notes with Alt+N
         if (e.key === 'n' && e.altKey) {
           e.preventDefault()
           router.push('/notes')
@@ -38,12 +38,13 @@ export function CommandMenu() {
 
         // New note with 'c'
         if (e.key === 'c' && !e.metaKey && !e.ctrlKey) {
-          const target = e.target as HTMLElement | null
+          const target = e.target
 
           if (
-            target &&
+            target instanceof HTMLElement &&
             target.tagName !== 'INPUT' &&
-            target.tagName !== 'TEXTAREA'
+            target.tagName !== 'TEXTAREA' &&
+            !target.isContentEditable
           ) {
             e.preventDefault()
             // Create new note logic would go here
