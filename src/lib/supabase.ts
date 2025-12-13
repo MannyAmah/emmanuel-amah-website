@@ -10,6 +10,7 @@ export interface Note {
   title: string
   emoji: string
   content: string
+  slug: string | null
   is_public: boolean
   is_pinned: boolean
   session_id: string | null
@@ -21,6 +22,7 @@ export interface NoteInsert {
   title: string
   emoji?: string
   content?: string
+  slug?: string
   is_public?: boolean
   is_pinned?: boolean
   session_id?: string | null
@@ -30,6 +32,7 @@ export interface NoteUpdate {
   title?: string
   emoji?: string
   content?: string
+  slug?: string
   is_public?: boolean
   is_pinned?: boolean
   updated_at?: string

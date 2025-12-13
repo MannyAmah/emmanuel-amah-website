@@ -79,7 +79,7 @@ function NoteCard({ note }: NoteCardProps) {
 
   return (
     <Link
-      href={`/notes/${note.id}`}
+      href={`/notes/${note.slug || note.id}`}
       className="block p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors"
     >
       <div className="flex items-start justify-between mb-2">

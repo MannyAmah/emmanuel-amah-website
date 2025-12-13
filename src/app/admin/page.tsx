@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, Pencil, Trash2, LogOut, ArrowLeft, Pin } from 'lucide-react'
+import { Plus, Pencil, Trash2, LogOut, ArrowLeft, Pin, Download, RefreshCw } from 'lucide-react'
 import { Note } from '@/lib/supabase'
 import { getPublicNotes, createNote, deleteNote, togglePinNote } from '@/lib/notes'
 
@@ -90,6 +90,40 @@ export default function AdminPage() {
     }
   }
 
+  const handleSeedNotes = async () => {
+    if (confirm('This will create/update the default notes (About Me, Now, Projects, Principles, Reading List). Continue?')) {
+      try {
+        const res = await fetch('/api/admin/seed', { method: 'POST' })
+        const data = await res.json()
+        if (res.ok) {
+          alert(`Seeded notes successfully!\n${data.results.map((r: any) => `${r.slug}: ${r.status}`).join('\n')}`)
+          loadNotes()
+        } else {
+          alert('Failed to seed notes: ' + data.error)
+        }
+      } catch (e) {
+        alert('Error seeding notes')
+      }
+    }
+  }
+
+  const handleCleanupNotes = async () => {
+    if (confirm('This will remove duplicate notes (keeping the most recent version of each). Continue?')) {
+      try {
+        const res = await fetch('/api/admin/cleanup', { method: 'POST' })
+        const data = await res.json()
+        if (res.ok) {
+          alert(`Cleanup complete!\n${data.message}\n${data.deleted.map((d: any) => `Deleted: ${d.title}`).join('\n')}`)
+          loadNotes()
+        } else {
+          alert('Failed to cleanup: ' + data.error)
+        }
+      } catch (e) {
+        alert('Error cleaning up notes')
+      }
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
@@ -140,6 +174,20 @@ export default function AdminPage() {
               <h1 className="text-2xl font-bold">Admin Dashboard</h1>
             </div>
             <div className="flex items-center gap-2">
+              <button
+                onClick={handleCleanupNotes}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Cleanup Duplicates
+              </button>
+              <button
+                onClick={handleSeedNotes}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900"
+              >
+                <Download className="h-4 w-4" />
+                Seed Notes
+              </button>
               <button
                 onClick={handleCreateNote}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg text-sm font-medium hover:opacity-90"

@@ -9,7 +9,7 @@ export default function Home() {
           Emmanuel Amah
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Healthcare Provider, Data Scientist and Founder.
+          Healthcare provider • builder of Human Digital Twins • longevity + preventive medicine
         </p>
 
         {/* Social Links */}

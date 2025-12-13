@@ -1,5 +1,17 @@
 import { supabase, Note, NoteInsert, NoteUpdate } from './supabase'
 
+// Priority order for pinned notes (lower number = higher priority)
+const PINNED_PRIORITY: Record<string, number> = {
+  'about me': 1,
+  'now': 2,
+  'projects': 3,
+  'links': 4,
+  'ideas': 5,
+  'tech stack': 6,
+  'principles': 7,
+  'reading list': 8,
+}
+
 // Get all public notes
 export async function getPublicNotes(): Promise<Note[]> {
   const { data, error } = await supabase
@@ -14,7 +26,21 @@ export async function getPublicNotes(): Promise<Note[]> {
     return []
   }
 
-  return data || []
+  // Custom sort: pinned notes by priority order, then by date
+  const notes = data || []
+  return notes.sort((a, b) => {
+    // Both pinned: sort by priority
+    if (a.is_pinned && b.is_pinned) {
+      const priorityA = PINNED_PRIORITY[a.title.toLowerCase()] || 100
+      const priorityB = PINNED_PRIORITY[b.title.toLowerCase()] || 100
+      return priorityA - priorityB
+    }
+    // Pinned first
+    if (a.is_pinned && !b.is_pinned) return -1
+    if (!a.is_pinned && b.is_pinned) return 1
+    // Both unpinned: sort by date (newest first)
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  })
 }
 
 // Get notes by session (for private notes)
@@ -34,15 +60,29 @@ export async function getNotesBySession(sessionId: string): Promise<Note[]> {
   return data || []
 }
 
-// Get a single note by ID
-export async function getNoteById(id: string): Promise<Note | null> {
-  const { data, error } = await supabase
+// Get a single note by ID or slug
+export async function getNoteById(idOrSlug: string): Promise<Note | null> {
+  // First try by ID
+  let { data, error } = await supabase
     .from('notes')
     .select('*')
-    .eq('id', id)
+    .eq('id', idOrSlug)
     .single()
 
-  if (error) {
+  // If not found by ID, try by slug
+  if (error || !data) {
+    const slugResult = await supabase
+      .from('notes')
+      .select('*')
+      .eq('slug', idOrSlug)
+      .single()
+
+    if (!slugResult.error && slugResult.data) {
+      return slugResult.data
+    }
+  }
+
+  if (error && !data) {
     console.error('Error fetching note:', error)
     return null
   }
